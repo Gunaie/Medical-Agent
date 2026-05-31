@@ -1,0 +1,17 @@
+# LLM 与 Agent 框架
+langchain>=0.2.0
+langchain-openai>=0.1.7
+langchain-community>=0.2.0
+
+# 图数据库驱动
+neo4j>=5.18.0
+
+# Web UI
+gradio>=4.31.0
+
+# 环境变量管理
+python-dotenv>=1.0.1
+
+# 工具库
+pydantic>=2.7.0
+tenacity>=8.3.0

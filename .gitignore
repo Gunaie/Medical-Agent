@@ -1,0 +1,7 @@
+.env
+*.log
+__pycache__/
+.venv/
+neo4j/data/
+*.csv
+!data/sample/*.csv  # 仅保留脱敏样本
