@@ -10,6 +10,12 @@ RELATION_TYPE_MAP = {
     "并发症": ["DISEASE_ACCOMPANY"],  # 注意：实际拼写需确认（见下文）
 }
 
+
+# === Cypher 注入防护白名单 ===
+# 仅允许以下关系类型参与 Cypher 查询构建，防止注入攻击
+VALID_RELATION_TYPES = {
+    "DISEASE_SYMPTOM", "DISEASE_DRUG", "DISEASE_ACCOMPANY"
+}
 # === 症状关键词：覆盖西医+中医表述 ===
 SYMPTOM_KEYWORDS = [
     # 引导词
@@ -86,15 +92,19 @@ def knowledge_graph_search(entity: str, relation: str = "") -> str:
         relation_types = ["DISEASE_SYMPTOM"]
 
     for r_type in relation_types:
+        # 白名单校验：防止 Cypher 注入攻击
+        if r_type not in VALID_RELATION_TYPES:
+            continue
+
         try:
             target_label = ":Symptom" if r_type == "DISEASE_SYMPTOM" else ""
             if r_type == "DISEASE_DRUG":
                 target_label = ":Drug"
-            cypher = f"""
-            MATCH (n:Disease {{name: $entity}})-[r:`{r_type}`]->(m{target_label})
-            RETURN m.name AS target
-            LIMIT 15
-            """
+            # 使用 format() 方法构建 Cypher（r_type 已通过白名单校验）
+            cypher_template = """MATCH (n:Disease {name: $entity})-[r:`{r_type}`]->(m{target_label})
+RETURN m.name AS target
+LIMIT 15"""
+            cypher = cypher_template.format(r_type=r_type, target_label=target_label)
             results = neo4j_client.run_query(cypher, {"entity": entity})
             if results:
                 for rec in results:

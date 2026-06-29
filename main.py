@@ -5,15 +5,26 @@ from contextlib import asynccontextmanager
 
 # 显式导入路由模块
 from app.api.routes import router as api_router
+from app.config.settings import settings  # ✅ P1-3 新增：导入配置
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("🚀 MedAgent Enterprise 正在启动...")
-    # ✅ 启动时打印已注册的路由，方便核对
+    print(f"   🌍 环境: {settings.ENV}")
+
+    # ✅ P1-6 预留：启动时验证 Neo4j 连接（取消注释即可启用）
+    # from app.tools.neo4j_tool import neo4j_client
+    # neo4j_client.connect()
+
+    # 启动时打印已注册的路由，方便核对
     for route in app.routes:
         if hasattr(route, "path") and hasattr(route, "methods"):
             print(f"   📍 已注册路由: {list(route.methods)} {route.path}")
     yield
+
+    # ✅ P1-6 预留：关闭时释放 Neo4j 连接（取消注释即可启用）
+    # neo4j_client.close()
+
     print("🛑 MedAgent Enterprise 正在关闭...")
 
 app = FastAPI(
@@ -23,10 +34,11 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# ✅ 【新增】添加 CORS 中间件，避免跨域问题
+# ✅ P1-3 修复：CORS 白名单从配置读取，不再允许所有来源
+cors_origins = settings.CORS_ORIGINS.split(",") if "," in settings.CORS_ORIGINS else [settings.CORS_ORIGINS]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=cors_origins,  # 从 settings.CORS_ORIGINS 读取，生产环境应限制为具体域名
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -36,5 +48,11 @@ app.add_middleware(
 app.include_router(api_router, prefix="")
 
 if __name__ == "__main__":
-    # ✅ 端口固定为 8080，与前端 settings.py 必须一致
-    uvicorn.run("main:app", host="127.0.0.1", port=8080, reload=True)
+    # ✅ P1-3 修复：参数从配置读取，生产环境自动关闭 reload
+    reload_flag = settings.ENV == "development"
+    uvicorn.run(
+        "main:app",
+        host=settings.API_HOST,    # 从配置读取，默认 0.0.0.0
+        port=settings.API_PORT,    # 从配置读取，默认 8080
+        reload=reload_flag         # development 时 True，production 时 False
+    )

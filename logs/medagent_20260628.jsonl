@@ -1,0 +1,12 @@
+{"event": "Initializing Medical ReAct Agent Template...", "logger": "medical_agent", "level": "info", "timestamp": "2026-06-28T13:46:22.484355Z"}
+{"event": "Dual_Domain_Medical_Agent_Initialized_Successfully", "logger": "medical_agent", "level": "info", "timestamp": "2026-06-28T13:46:22.508876Z"}
+{"session_id": "chat-test-001", "event": "Session saved to Redis", "logger": "medical_agent", "level": "info", "timestamp": "2026-06-28T13:46:30.220270Z"}
+{"event": "Initializing Medical ReAct Agent Template...", "logger": "medical_agent", "level": "info", "timestamp": "2026-06-28T13:48:25.834456Z"}
+{"event": "Dual_Domain_Medical_Agent_Initialized_Successfully", "logger": "medical_agent", "level": "info", "timestamp": "2026-06-28T13:48:25.848643Z"}
+{"error": "list index out of range", "session_id": "chat-test-001", "event": "ReAct_Agent_Failed", "logger": "medical_agent", "level": "error", "timestamp": "2026-06-28T13:48:27.637204Z"}
+
+{"session_id": "save-test-001", "event": "Session saved to Redis", "logger": "medical_agent", "level": "info", "timestamp": "2026-06-28T13:50:07.242917Z"}
+{"event": "Dual_Domain_Medical_Agent_Initialized_Successfully", "logger": "medical_agent", "level": "info", "timestamp": "2026-06-28T13:52:06.636420Z"}
+{"event": "Initializing Medical ReAct Agent Template...", "logger": "medical_agent", "level": "info", "timestamp": "2026-06-28T13:53:53.691339Z"}
+{"event": "Dual_Domain_Medical_Agent_Initialized_Successfully", "logger": "medical_agent", "level": "info", "timestamp": "2026-06-28T13:53:53.702666Z"}
+{"session_id": "chat-test-001", "event": "Session saved to Redis", "logger": "medical_agent", "level": "info", "timestamp": "2026-06-28T13:54:01.315240Z"}

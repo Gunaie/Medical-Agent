@@ -5,7 +5,7 @@ import uuid
 import json
 from app.config.settings import settings
 
-STREAM_API_URL = f"http://{settings.API_HOST}:{settings.API_PORT}/v1/chat/stream"
+STREAM_API_URL = f"http://127.0.0.1:{settings.API_PORT}/v1/chat/stream"
 
 
 def generate_new_session_id():

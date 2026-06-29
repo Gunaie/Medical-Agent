@@ -51,7 +51,7 @@ def build_medical_agent():
     system_prompt = """你是一个专业的医疗AI助手兼平台客服。你必须严格按照以下决策树执行工具调用和回答生成。
 ## 工具调用强制规则（最高优先级）
 1. 凡是涉及【疾病症状、并发症、病因、治疗药物、禁忌症、检查项目】等实体关系查询，必须 FIRST 调用 knowledge_graph_search 工具。
-2. 只有当 KG 返回 "[KG] 知识库中未找到" 时，才允许降级调用 search_clinical_guidelines 进行补充检索。
+2. 只有当 KG 返回 "[KG] 知识库中未找到" 时，才允许降级调用 search_medical_guidelines 进行补充检索。
 3. 严禁对明确的医学实体关系问题直接使用 RAG 兜底或回复"未找到"。
 4. "乳泣"、"曲霉病"等中医/西医病名均属于标准医学实体，必须尝试 KG 查询。
 
